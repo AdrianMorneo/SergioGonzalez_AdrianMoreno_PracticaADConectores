@@ -3,7 +3,9 @@ import Utiles as ut
 def nuevoProfesorPedirValores():
     def alta():
         """
-        Permite crear nuevos profesores
+        Permite crear nuevos profesores pidiendo al usuario los parametros adecuados
+        si falla 3 veces en un parametro no crea el profesor.
+        El usuario puede elegir introducir otro profesor despues de haber metido corretamente un profesor
         :param: No recibe nada
         :return: No devuelve nada
         """

@@ -1,3 +1,7 @@
+import GestionBBDD as gbd
+
+gbd.crearBBDD()
+gbd.crearTablasBBDD()
 
 while True:
     # Menú principal
