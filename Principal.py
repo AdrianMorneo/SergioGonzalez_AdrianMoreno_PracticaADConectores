@@ -1,4 +1,7 @@
 import GestionBBDD as gbd
+import GestionAlumnos as ga
+import GestionCursos as gc
+import GestionProfesores as gp
 
 gbd.crearBBDD()
 gbd.crearTablasBBDD()
@@ -30,23 +33,26 @@ while True:
             if opcion_profesores == '1':
                 print("\n-- Has seleccionado: Nuevo profesor --")
                 # Lógica para nuevo profesor
-                pass
+                gp.nuevoProfesor()
+
             elif opcion_profesores == '2':
                 print("\n-- Has seleccionado: Eliminar profesor --")
                 # Lógica para eliminar profesor
-                pass
+                gbd.eliminarProfesorBBDD()
             elif opcion_profesores == '3':
                 print("\n-- Has seleccionado: Modificar profesor --")
                 # Lógica para modificar profesor
+                gbd.modificarProfesorBBDD()
                 pass
             elif opcion_profesores == '4':
                 print("\n-- Has seleccionado: Buscar profesor --")
                 # Lógica para buscar profesor
-                pass
+                gp.buscarProfesor()
+
             elif opcion_profesores == '5':
                 print("\n-- Has seleccionado: Mostrar todos los profesores --")
                 # Lógica para mostrar todos los profesores
-                pass
+                gbd.mostrarTodosProfesoresBBDD()
             elif opcion_profesores == '9':
                 break
             elif opcion_profesores == '0':

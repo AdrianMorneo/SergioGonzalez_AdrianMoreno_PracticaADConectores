@@ -1,70 +1,83 @@
-import GestionBBDD as GBD
+import GestionBBDD as gbd
 import Utiles as ut
-def nuevoProfesorPedirValores():
-    def alta():
-        """
-        Permite crear nuevos profesores pidiendo al usuario los parametros adecuados
-        si falla 3 veces en un parametro no crea el profesor.
-        El usuario puede elegir introducir otro profesor despues de haber metido corretamente un profesor
-        :param: No recibe nada
-        :return: No devuelve nada
-        """
-        finAlta = False
-        while not finAlta:
-            finAlta = True
-            finEntradaAlta = False
+def nuevoProfesor():
+
+    """
+    Permite crear nuevos profesores pidiendo al usuario los parametros adecuados
+    si falla 3 veces en un parametro no crea el profesor.
+    El usuario puede elegir introducir otro profesor despues de haber metido corretamente un profesor
+    :param: No recibe nada
+    :return: No devuelve nada
+    """
+    finAlta = False
+    while not finAlta:
+        finAlta = True
+        finEntradaAlta = False
+        fallos = 0
+
+
+        while not finEntradaAlta and fallos < 3:
+            dni = input("DNI: ").strip().upper()
+            if ut.validarDNI(dni):
+                finEntradaAlta = True
+            else:
+                fallos = ut.fallo(fallos, "El Dni debe tener 8 numeros y una letra")
+
+        finEntradaAlta = False
+
+        if fallos < 3:
             fallos = 0
-
-
             while not finEntradaAlta and fallos < 3:
-                dni = input("DNI: ").strip().upper()
-                if ut.validarDNI(dni):
+                nombre = input("Nombre: ").strip().upper()
+                if ut.validarNombre(nombre):
+                    print("\t\tNombre Valido\n")
                     finEntradaAlta = True
                 else:
-                    fallos = ut.fallo(fallos, "El Dni debe tener 8 numeros y una letra")
+                    fallos = ut.fallo(fallos, "El nombre debe contener al menos 2 caracteres.")
 
-            finEntradaAlta = False
+        finEntradaAlta = False
+        if fallos < 3:
+            fallos = 0
+            while not finEntradaAlta and fallos < 3:
+                direccion = input("Direccion: ").strip().upper()
+                if ut.validarDireccion(direccion):
+                    print("\t\tDirección Valida\n")
+                    finEntradaAlta = True
+                else:
+                    fallos = ut.fallo(fallos, "La dirección debe de contener mínimo 4 carácteres.")
 
-            if fallos < 3:
-                fallos = 0
-                while not finEntradaAlta and fallos < 3:
-                    nombre = input("Nombre: ").strip().upper()
-                    if ut.validarNombre(nombre):
-                        print("\t\tNombre Valido\n")
-                        finEntradaAlta = True
-                    else:
-                        fallos = ut.fallo(fallos, "El nombre debe contener al menos 2 caracteres.")
+        finEntradaAlta = False
+        if fallos < 3:
+            fallos = 0
+            while not finEntradaAlta and fallos < 3:
+                telefono = input("Telefono: ").strip()
+                if ut.validarTelefono(telefono):
+                    print("\t\tTelefono Valido\n")
+                    finEntradaAlta = True
+                else:
+                    fallos = ut.fallo(fallos, "Formato incorrecto, debe de tener 9 dígitos.")
 
-            finEntradaAlta = False
-            if fallos < 3:
-                fallos = 0
-                while not finEntradaAlta and fallos < 3:
-                    direccion = input("Direccion: ").strip().upper()
-                    if ut.validarDireccion(direccion):
-                        print("\t\tDirección Valida\n")
-                        finEntradaAlta = True
-                    else:
-                        fallos = ut.fallo(fallos, "La dirección debe de contener mínimo 4 carácteres.")
+        if fallos < 3:
+            if ut.confirmacion("Dar de alta al profesor?", "Alta"):
+                gbd.nuevoProfesorInsertBBDD(dni, nombre, direccion, telefono)
+                if ut.confirmacion("Desea realizar otra Alta?", None):
+                    finAlta = False
 
-            finEntradaAlta = False
-            if fallos < 3:
-                fallos = 0
-                while not finEntradaAlta and fallos < 3:
-                    telefono = input("Telefono: ").strip()
-                    if ut.validarTelefono(telefono):
-                        print("\t\tTelefono Valido\n")
-                        finEntradaAlta = True
-                    else:
-                        fallos = ut.fallo(fallos, "Formato incorrecto, debe de tener 9 dígitos.")
+        else:
+            print("\nAlta Cancelada.")
 
-            if fallos < 3:
-                if ut.confirmacion("Dar de alta al profesor?", "Alta"):
-                    GBD.nuevoProfesorInsertBBDD(dni,nombre,direccion,telefono)
-                    print("Profesor dado de alta correcctamente")
-                    if ut.confirmacion("Desea realizar otra Alta?", None):
-                        finAlta = False
-
+def buscarProfesor():
+    finEntradaAlta = False
+    fallos = 0
+    while not finEntradaAlta and fallos < 3:
+        dni = input("DNI: ").strip().upper()
+        if ut.validarDNI(dni):
+            finEntradaAlta = True
+            if gbd.buscarProfesorBBDD(dni):
+                return dni
             else:
-                print("\nAlta Cancelada.")
+                return ""
+        else:
+            fallos = ut.fallo(fallos, "El Dni debe tener 8 numeros y una letra")
 
 

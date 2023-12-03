@@ -37,7 +37,7 @@ def validarTelefono(telefono):
     :param telefono:
     :return:
     """
-    return len(telefono) == 9 and telefono[:0].isdigit()
+    return len(telefono) == 9 and telefono.isdigit()
 
 def validarFechaNacimiento(fecha_nacimiento):
     # Validar que la fecha de nacimiento sea anterior al 2020
