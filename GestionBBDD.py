@@ -300,7 +300,7 @@ def mostrarTodosProfesoresBBDD():
     """
     con, cur = conexion()
     try:
-        cur.execute("select * from PROFESORES")
+        cur.execute("select * from profesores")
         for fila in cur:
             print(fila)
     except Exception as mostrarProfesores:
