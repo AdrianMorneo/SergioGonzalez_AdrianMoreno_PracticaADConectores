@@ -20,16 +20,16 @@ def conexion():
     :return: No devuelve nada
     """
     try:
-        con = ps.connect(host='localhost', port=3306,
-                         user='root', password='1234', database='adrianmoreno_sergiogonzalez')
+        con = ps.connect(host='localhost', port=3307,
+                         user='root', password='montero', database='adrianmoreno_sergiogonzalez')
         cursor = con.cursor()
         return con, cursor
 
     except Exception as errorConexionNoExiste:
 
         try:
-            con = ps.connect(host='localhost', port=3306,
-                             user='root', password='1234')
+            con = ps.connect(host='localhost', port=3307,
+                             user='root', password='montero')
             cursor = con.cursor()
             print("La BBDD no existe, se creará")
             return con, cursor
@@ -100,7 +100,7 @@ def crearTablasBBDD():
     con, cur = conexion()
     try:
             # Tabla para profesores
-        cur.execute('''CREATE TABLE IF NOT EXISTS PROFESORES (
+        cur.execute('''CREATE TABLE IF NOT EXISTS profesores (
             ID INT AUTO_INCREMENT PRIMARY KEY,
             DNI CHAR(9) UNIQUE NOT NULL,
             Nombre VARCHAR(255) NOT NULL,
@@ -109,16 +109,16 @@ def crearTablasBBDD():
         );''')
 
         # Tabla para cursos
-        cur.execute('''CREATE TABLE IF NOT EXISTS CURSOS (
+        cur.execute('''CREATE TABLE IF NOT EXISTS cursos (
             Codigo INT AUTO_INCREMENT PRIMARY KEY,
             Nombre VARCHAR(255) NOT NULL,
             Descripcion TEXT NOT NULL,
             ProfesorID INT NOT NULL,
-            FOREIGN KEY (ProfesorID) REFERENCES PROFESORES (ID)
+            FOREIGN KEY (ProfesorID) REFERENCES profesores (ID)
         );''')
 
        # Tabla para alumnos
-        cur.execute('''CREATE TABLE IF NOT EXISTS ALUMNOS (
+        cur.execute('''CREATE TABLE IF NOT EXISTS alumnos (
             NumeroExpediente INT AUTO_INCREMENT PRIMARY KEY,
             Nombre VARCHAR(255) NOT NULL,
             Apellidos VARCHAR(255) NOT NULL,
@@ -128,12 +128,12 @@ def crearTablasBBDD():
         );''')
         #Tabla para la relación entre alumnos y cursos (muchos a muchos)
         cur.execute('''
-        CREATE TABLE IF NOT EXISTS AlumnosCursos (
+        CREATE TABLE IF NOT EXISTS alumnoscursos (
             AlumnoExpediente INT,
             CursoCodigo INT,
             PRIMARY KEY (AlumnoExpediente, CursoCodigo),
-            FOREIGN KEY (AlumnoExpediente) REFERENCES ALUMNOS(NumeroExpediente),
-            FOREIGN KEY (CursoCodigo) REFERENCES CURSOS(Codigo)
+            FOREIGN KEY (AlumnoExpediente) REFERENCES alumnos(NumeroExpediente),
+            FOREIGN KEY (CursoCodigo) REFERENCES cursos(Codigo)
         );''')
     except Exception as errorCrearTablas:
         print("Error al crear las tablas:", errorCrearTablas)
