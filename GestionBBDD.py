@@ -1,6 +1,7 @@
 import pymysql as ps
 import Utiles as ut
 import GestionProfesores as gp
+import GestionCursos as gc
 def crearBBDD():
     """
     Crea la base de datos si no existe
@@ -111,9 +112,9 @@ def crearTablasBBDD():
         # Tabla para cursos
         cur.execute('''CREATE TABLE IF NOT EXISTS cursos (
             Codigo INT AUTO_INCREMENT PRIMARY KEY,
-            Nombre VARCHAR(255) NOT NULL,
+            Nombre VARCHAR(255) UNIQUE NOT NULL,
             Descripcion TEXT NOT NULL,
-            ProfesorID INT NOT NULL,
+            ProfesorID INT,
             FOREIGN KEY (ProfesorID) REFERENCES profesores (ID)
         );''')
 
@@ -193,14 +194,17 @@ def buscarProfesorBBDD(dni):
             print("Nombre:", profesor[2])
             print("Dirección:", profesor[3])
             print("Teléfono:", profesor[4])
-            encontrado = True
+            return profesor[0]
         else:
             print("No se encontró ningún profesor con el DNI especificado.")
+            return 0
     except Exception as errorModificarProfesor:
         print(f"Error al buscar el profesor con DNI: {dni}: {errorModificarProfesor}")
+        return 0
     finally:
         confirmarEjecucionCerrarCursor(con, cur)
-        return encontrado
+
+
 
 
 def modificarProfesorBBDD():
@@ -271,7 +275,7 @@ def modificarProfesorBBDD():
                 while not finEntradaAlta and fallos < 3:
                     telefonoNuevo = input("Nombre: ").strip().upper()
                     if ut.validarTelefono(telefonoNuevo):
-                        if ut.confirmacion("Seguro que quieres modificar?", "DNI"):
+                        if ut.confirmacion("Seguro que quieres modificar?", "TELEFONO"):
                             cur.execute(f"UPDATE profesores SET Telefono = '{telefonoNuevo}' WHERE DNI = '{dni}'")
                             finEntradaAlta = True
                     else:
@@ -304,8 +308,172 @@ def mostrarTodosProfesoresBBDD():
         for fila in cur:
             print(fila)
     except Exception as mostrarProfesores:
-        print("Error al introducir profesor", mostrarProfesores)
+        print("Error al mostrar profesor", mostrarProfesores)
     finally:
         confirmarEjecucionCerrarCursor(con, cur)
 
+
+######################################################################
+######################################################################
+###                           CURSOS                               ###
+######################################################################
+######################################################################
+
+def nuevoCursoInsertBBDD(nombre, descripcion):
+    """
+    Introduce en la base de datos un nuevo profesor con los datos recibidos por parametro
+
+    :param nombre: Recibe nombre Curso
+    :param descripcion: Recibe descripcion Curso
+    :return: No devuelve nada
+    """
+    con, cur = conexion()
+
+    try:
+        cur.execute("set FOREIGN_KEY_CHECKS = 1")
+        # Insertar cursos
+        cur.execute("INSERT INTO cursos (Nombre, Descripcion) VALUES (%s, %s)", (nombre, descripcion))
+        print("Curso dado de alta correcctamente")
+
+    except Exception as errorMeterProfesor:
+        print("Error al introducir Curso en la BBDD", errorMeterProfesor)
+        print("No se ha realizado un nuevo alta")
+    finally:
+        confirmarEjecucionCerrarCursor(con, cur)
+
+def eliminarCursosBBDD():
+
+    con, cur = conexion()
+    nombre = gc.buscarCurso()
+    if nombre != "":
+        if ut.confirmacion("Seguro que quieres ELIMINAR EL CURSO?", f"Eliminacion del CURSO: {nombre} realizada"):
+            try:
+                cur.execute(f"DELETE FROM cursos WHERE Nombre = '{nombre}'")
+
+            except Exception as errorEliminar:
+                print(f"Error al eliminar el CURSO: {nombre}: {errorEliminar}")
+            finally:
+                confirmarEjecucionCerrarCursor(con, cur)
+
+
+
+def buscarCursoBBDD(nombre):
+    con, cur = conexion()
+    encontrado = False
+    try:
+        cur.execute(f"SELECT * FROM cursos WHERE Nombre = '{nombre}'")
+        profesor = cur.fetchone()
+        if profesor:
+            print("Datos del Curso:")
+            print("Codigo:", profesor[0])
+            print("Nombre:", profesor[1])
+            print("Descripcion:", profesor[2])
+            print("Profesor:", profesor[3])
+            encontrado = True
+        else:
+            print("No se encontró ningún profesor con el DNI especificado.")
+    except Exception as errorModificarProfesor:
+        print(f"Error al buscar el profesor con DNI: {nombre}: {errorModificarProfesor}")
+    finally:
+        confirmarEjecucionCerrarCursor(con, cur)
+        return encontrado
+
+
+def modificarCursoBBDD():
+    """
+    Permite al usuario modificar un profesor seleccionando el campo a modificar.
+
+    :return: No devuelve nada.
+    """
+    con, cur = conexion()
+    nombre = gc.buscarCurso()
+    if nombre != "":
+        try:
+            # Consultar datos actuales del profesor
+            cur.execute(f"SELECT * FROM cursos WHERE Nombre = '{nombre}'")
+            profesor_actual = cur.fetchone()
+
+
+            # Mostrar opciones al usuario
+            print("\nSeleccione el campo a modificar:")
+            print("1. Nombre")
+            print("2. Descripcion")
+            print("3. Profesor")
+            print("0. Cancelar")
+
+            finEntradaAlta = False
+            fallos = 0
+
+            opcion = input("Opción: ")
+
+            if opcion == "1":
+
+                while not finEntradaAlta and fallos < 3:
+
+                    nombreNuevo = input("Nombre: ").strip().upper()
+                    if ut.validarNombre(nombreNuevo):
+                        if ut.confirmacion("Seguro que quieres modificar?", "NOMBRE"):
+                            cur.execute(f"UPDATE cursos SET Nombre = '{nombreNuevo}' WHERE Nombre = '{nombre}'")
+                            finEntradaAlta = True
+                    else:
+                        fallos = ut.fallo(fallos, "El nombre debe contener al menos 2 caracteres.")
+
+            elif opcion == "2":
+
+                while not finEntradaAlta and fallos < 3:
+                    descripcionNueva = input("Descripcion: ").strip().upper()
+                    if ut.validarDireccion(descripcionNueva):
+                        if ut.confirmacion("Seguro que quieres modificar?", "DESCRIPCION"):
+                            cur.execute(f"UPDATE cursos SET Descripcion = '{descripcionNueva}' WHERE Nombre = '{nombre}'")
+                            finEntradaAlta = True
+                    else:
+                        fallos = ut.fallo(fallos, "La dirección debe de contener mínimo 4 carácteres.")
+
+            elif opcion == "3":
+
+                while not finEntradaAlta and fallos < 3:
+                    profesorDni = input("DNI Profesor: ").strip().upper()
+
+                    if ut.validarDNI(profesorDni):
+                        IDProfesor = buscarProfesorBBDD(profesorDni)
+                        print(f"el id de profesor es {IDProfesor}")
+                        if IDProfesor != 0:
+                            if ut.confirmacion("Seguro que quieres modificar?", "Profesor"):
+                                cur.execute(f"UPDATE cursos SET ProfesorID = '{IDProfesor}' WHERE Nombre = '{nombre}'")
+                                finEntradaAlta = True
+                        else:
+                            print("No hay en la BBDD ningun profesor con ese DNI")
+                    else:
+                        fallos = ut.fallo(fallos, "El DNI debe de tener 8 digitos y una letra")
+
+            elif opcion == "0":
+                print("Modificación cancelada.")
+            else:
+                print("Opción no válida.")
+
+            print("Profesor actualizado correctamente.")
+
+
+
+        except Exception as errorModificarProfesor:
+            print(f"Error al modificar el profesor {nombre}: {errorModificarProfesor}")
+        finally:
+            confirmarEjecucionCerrarCursor(con, cur)
+
+
+
+def mostrarTodosCursosBBDD():
+    """
+    Muestra todos los profesores metidos en la BBDD
+    :return: No devuelve nada
+    """
+    con, cur = conexion()
+    try:
+        cur.execute("select * from cursos")
+        for fila in cur:
+            print(fila)
+    except Exception as mostrarCursos:
+        print("Error al mostrar Cursos", mostrarCursos)
+    finally:
+        confirmarEjecucionCerrarCursor(con, cur)
 

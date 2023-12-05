@@ -113,24 +113,24 @@ while True:
 
             if opcion_cursos == '1':
                 print("\n-- Has seleccionado: Nuevo curso --")
-                # Lógica para nuevo curso
-                pass
+                gc.nuevoCurso()
+
             elif opcion_cursos == '2':
                 print("\n-- Has seleccionado: Eliminar curso --")
-                # Lógica para eliminar curso
-                pass
+                gbd.eliminarCursosBBDD()
+
             elif opcion_cursos == '3':
                 print("\n-- Has seleccionado: Modificar curso --")
-                # Lógica para modificar curso
-                pass
+                gbd.modificarCursoBBDD()
+
             elif opcion_cursos == '4':
                 print("\n-- Has seleccionado: Buscar curso --")
-                # Lógica para buscar curso
-                pass
+                gc.buscarCurso()
+
             elif opcion_cursos == '5':
                 print("\n-- Has seleccionado: Mostrar todos los cursos --")
-                # Lógica para mostrar todos los cursos
-                pass
+                gbd.mostrarTodosCursosBBDD()
+
             elif opcion_cursos == '9':
                 break
             elif opcion_cursos == '0':

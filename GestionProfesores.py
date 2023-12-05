@@ -73,11 +73,9 @@ def buscarProfesor():
         dni = input("DNI: ").strip().upper()
         if ut.validarDNI(dni):
             finEntradaAlta = True
-            if gbd.buscarProfesorBBDD(dni):
+            if gbd.buscarProfesorBBDD(dni) != 0:
                 return dni
             else:
                 return ""
         else:
             fallos = ut.fallo(fallos, "El Dni debe tener 8 numeros y una letra")
-
-
