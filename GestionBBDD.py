@@ -22,7 +22,7 @@ def conexion():
     """
     try:
         con = ps.connect(host='localhost', port=3307,
-                         user='root', password='montero', database='adrianmoreno_sergiogonzalez')
+                         user='root', password='my-secret-pw', database='adrianmoreno_sergiogonzalez') #passAdri: my-secret-pw // passSerg: montero o 1234
         cursor = con.cursor()
         return con, cursor
 
@@ -30,7 +30,7 @@ def conexion():
 
         try:
             con = ps.connect(host='localhost', port=3307,
-                             user='root', password='montero')
+                             user='root', password='my-secret-pw') #passAdri: my-secret-pw // passSerg: montero o 1234
             cursor = con.cursor()
             print("La BBDD no existe, se creará")
             return con, cursor

@@ -25,9 +25,6 @@ def crearBD(cur):
                               FOREIGN KEY(codCliente) REFERENCES clientes(codigo),
                               FOREIGN KEY(codCoche) REFERENCES COCHES(codigo)
                             );''')
-
-
-
     con.commit()
 
 
