@@ -70,7 +70,7 @@ def fallo(fallos, mensaje):
     :param mensaje: El mensaje que se quiere mostrar junto al numero de fallos
     :return: Devuelve los errores incrementados en 1
     """
-    print(f"\t\t{mensaje} \n\t\tIntentos: {fallos + 1} de 3")
+    print(f"\t\t{mensaje} \n\t\tIntentos: {fallos + 1} de 5")
     return fallos + 1
 
 def confirmacion(mensaje, tipo):

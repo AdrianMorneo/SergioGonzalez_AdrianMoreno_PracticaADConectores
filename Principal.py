@@ -52,7 +52,7 @@ while True:
             elif opcion_profesores == '5':
                 print("\n-- Has seleccionado: Mostrar todos los profesores --")
                 # Lógica para mostrar todos los profesores
-                gbd.mostrarTodosProfesoresBBDD()
+                gbd.mostrarProfesores()
             elif opcion_profesores == '9':
                 break
             elif opcion_profesores == '0':
@@ -75,22 +75,26 @@ while True:
             if opcion_alumnos == '1':
                 print("\n-- Has seleccionado: Nuevo alumno --")
                 # Lógica para nuevo alumno
+                ga.nuevoAlumno()
                 pass
             elif opcion_alumnos == '2':
                 print("\n-- Has seleccionado: Eliminar alumno --")
                 # Lógica para eliminar alumno
+                gbd.eliminarAlumnoBBDD()
                 pass
             elif opcion_alumnos == '3':
                 print("\n-- Has seleccionado: Modificar alumno --")
                 # Lógica para modificar alumno
+                gbd.modificarAlumnoBBDD()
                 pass
             elif opcion_alumnos == '4':
                 print("\n-- Has seleccionado: Buscar alumno --")
-                # Lógica para buscar alumno
+                ga.buscarAlumno()
                 pass
             elif opcion_alumnos == '5':
                 print("\n-- Has seleccionado: Mostrar todos los alumnos --")
                 # Lógica para mostrar todos los alumnos
+                gbd.mostrarAlumnos()
                 pass
             elif opcion_alumnos == '9':
                 break
@@ -107,6 +111,7 @@ while True:
             print("3. Modificar curso")
             print("4. Buscar curso")
             print("5. Mostrar todos los cursos")
+            print("6. Matricular Alumno a un Curso")
             print("9. Volver al menú principal")
             print("0. Salir")
             opcion_cursos = input("\nSeleccione una opción (1-5, 9, 0): ")
@@ -130,6 +135,10 @@ while True:
             elif opcion_cursos == '5':
                 print("\n-- Has seleccionado: Mostrar todos los cursos --")
                 gbd.mostrarTodosCursosBBDD()
+
+            elif opcion_cursos == '6':
+                print("\n-- Has seleccionado: Matricular Alumno a un Curso --")
+                gbd.matricularAlumno()
 
             elif opcion_cursos == '9':
                 break
