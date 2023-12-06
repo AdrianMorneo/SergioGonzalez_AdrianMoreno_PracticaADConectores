@@ -112,6 +112,7 @@ while True:
             print("4. Buscar curso")
             print("5. Mostrar todos los cursos")
             print("6. Matricular Alumno a un Curso")
+            print("7. Mostrar Alumnos de un Curso")
             print("9. Volver al menú principal")
             print("0. Salir")
             opcion_cursos = input("\nSeleccione una opción (1-5, 9, 0): ")
@@ -139,6 +140,10 @@ while True:
             elif opcion_cursos == '6':
                 print("\n-- Has seleccionado: Matricular Alumno a un Curso --")
                 gbd.matricularAlumno()
+
+            elif opcion_cursos == '7':
+                print("\n-- Has seleccionado: Mostrar los alumnos de un Curso --")
+                gbd.mostrarAlumnosdeCurso()
 
             elif opcion_cursos == '9':
                 break

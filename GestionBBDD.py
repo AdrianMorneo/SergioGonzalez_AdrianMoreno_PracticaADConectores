@@ -721,14 +721,7 @@ def matricularAlumno():
                 fallos = ut.fallo(fallos, "Alumno no encontrado")
 
     if fallos < 5 :
-        '''
-                CREATE TABLE IF NOT EXISTS alumnoscursos (
-                    AlumnoExpediente INT,
-                    CursoCodigo INT,
-                    PRIMARY KEY (AlumnoExpediente, CursoCodigo),
-                    FOREIGN KEY (AlumnoExpediente) REFERENCES alumnos(NumeroExpediente),
-                    FOREIGN KEY (CursoCodigo) REFERENCES cursos(Codigo)
-                );'''
+
         op = ut.confirmacion(f"Seguro que deseas dar de alta al alumno {alumnoM[0]} {alumnoM[1]} al curso {nombreC} ?" , "Matricula ")
         if op:
             idAlumnoM = buscarAlumnoBBDD(alumnoM[0], alumnoM[1])
@@ -738,5 +731,30 @@ def matricularAlumno():
             cur.execute(f"INSERT INTO alumnoscursos (AlumnoExpediente, CursoCodigo) VALUES ('{idAlumnoM}', '{idCursoM}');")
             confirmarEjecucionCerrarCursor(con, cur)
 
+
+def mostrarAlumnosdeCurso():
+    con, cur = conexion()
+    encontrado = False
+    fallos = 0
+    while not encontrado and fallos < 5:
+        nombreC = input("Nombre del curso: ").strip().upper()
+        if buscarCursoBBDD(nombreC):
+            encontrado = True
+            print("Curso encontrado")
+            id = devolverIddeCurso(nombreC)
+        else:
+            fallos = ut.fallo(fallos, "Curso no encontrado")
+
+    if fallos < 5 :
+        cur.execute(f'''SELECT NumeroExpediente , nombre , apellidos 
+        FROM alumnos 
+        JOIN alumnoscursos 
+        ON alumnoscursos.AlumnoExpediente = alumnos.NumeroExpediente 
+        WHERE alumnoscursos.CursoCodigo = {id}''')
+
+        alumnos = cur.fetchall()
+        for alumno in alumnos:
+            print(f"Numero de Expediente: {alumno[0]} , Alumno: {alumno[1]} {alumno[2]}\n")
+            confirmarEjecucionCerrarCursor(con, cur)
 
 
