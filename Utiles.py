@@ -1,6 +1,6 @@
 
 from datetime import datetime
-
+import GestionBBDD as gbd
 
 def validarDNI(dni):
     # Validar DNI con 8 números y una letra al final
@@ -19,7 +19,7 @@ def validarNombre(nombre):
     :param nombre: EL nombre a validar
     :return: Si se cumple o no
     """
-    return len(nombre) > 2
+    return len(nombre) > 1
 
 def validarDireccion(direccion):
     # Validar que la dirección tenga más de 4 caracteres
@@ -28,7 +28,7 @@ def validarDireccion(direccion):
     :param direccion: EL nombre a validar
     :return: Si se cumple o no
     """
-    return len(direccion) > 4
+    return len(direccion) > 3
 
 def validarTelefono(telefono):
     # Validar que el teléfono tenga 9 números
@@ -48,14 +48,14 @@ def validarFechaNacimiento(fecha_nacimiento):
     """
     try:
         fecha_nac = datetime.strptime(fecha_nacimiento, '%Y-%m-%d')
-        return fecha_nac.year < 2020
+        return 2020 > fecha_nac.year > 1950
     except ValueError:
         return False
 
 def validarDescripcion(descripcion):
-    # Validar que la descripción tenga más de 5 caracteres
+    # Validar que la descripción tenga más de 4 caracteres
     """
-    Comprueba que la descripcion tenga al menos 4 caracteres
+    Comprueba que la descripcion tenga al menos 5 caracteres
     :param descripcion: EL nombre a validar
     :return: Si se cumple o no
     """
@@ -98,3 +98,22 @@ def confirmacion(mensaje, tipo):
             fallos = fallo(fallos, "Entrada no valida.")
 
 
+def comprobarVacio (tabla):
+
+    con, cur = gbd.conexion()
+
+    try:
+        cur.execute(f"select * from {tabla}")
+        resultadoConsulta = cur.fetchone()
+
+        if resultadoConsulta is None:
+            print(f"La tabla {tabla} esta vacia")
+            return False
+        else:
+            return True
+
+    except Exception as comprobarTabla:
+        print("Error al comprobar tabla en la BBDD", comprobarTabla)
+
+    finally:
+        gbd.confirmarEjecucionCerrarCursor(con, cur)

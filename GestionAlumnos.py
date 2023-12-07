@@ -90,24 +90,25 @@ def nuevoAlumno():
 def buscarAlumno():
     finEntradaAlta = False
     fallos = 0
-    while not finEntradaAlta and fallos < 5:
-        nombre = input("Nombre del alumno : ").strip().upper()
-        if ut.validarNombre(nombre):
-            finEntradaAlta = True
-        else:
-            fallos = ut.fallo(fallos, "El nombre debe tener al menos dos caracteres ")
-    finEntradaAlta = False
-    while not finEntradaAlta and fallos < 5:
-        apellidos = input("Apellidos del alumno : ").strip().upper()
-        if ut.validarNombre(apellidos):
-            finEntradaAlta = True
-        else:
-            fallos = ut.fallo(fallos, "Los apellidos debe tener al menos 2 caracteres ")
-    if apellidos is not None and nombre is not None:
-        if gbd.buscarAlumnoBBDD(nombre , apellidos ) != 0:
-            return nombre, apellidos
-        else:
-            return ""
+    if ut.comprobarVacio("alumnos"):
+        while not finEntradaAlta and fallos < 5:
+            nombre = input("Nombre del alumno : ").strip().upper()
+            if ut.validarNombre(nombre):
+                finEntradaAlta = True
+            else:
+                fallos = ut.fallo(fallos, "El nombre debe tener al menos dos caracteres ")
+        finEntradaAlta = False
+        while not finEntradaAlta and fallos < 5:
+            apellidos = input("Apellidos del alumno : ").strip().upper()
+            if ut.validarNombre(apellidos):
+                finEntradaAlta = True
+            else:
+                fallos = ut.fallo(fallos, "Los apellidos debe tener al menos 2 caracteres ")
+        if apellidos is not None and nombre is not None:
+            if gbd.buscarAlumnoBBDD(nombre , apellidos ) != 0:
+                return nombre, apellidos
+            else:
+                return ""
 
 def alumnoRepe(nombre , apellidos):
 

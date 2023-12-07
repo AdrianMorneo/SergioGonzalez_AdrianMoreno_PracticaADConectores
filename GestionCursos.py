@@ -46,13 +46,14 @@ def nuevoCurso():
 def buscarCurso():
     finEntradaAlta = False
     fallos = 0
-    while not finEntradaAlta and fallos < 3:
-        nombre = input("Nombre: ").strip().upper()
-        if ut.validarNombre(nombre):
-            finEntradaAlta = True
-            if gbd.buscarCursoBBDD(nombre):
-                return nombre
+    if ut.comprobarVacio("cursos"):
+        while not finEntradaAlta and fallos < 3:
+            nombre = input("Nombre: ").strip().upper()
+            if ut.validarNombre(nombre):
+                finEntradaAlta = True
+                if gbd.buscarCursoBBDD(nombre):
+                    return nombre
+                else:
+                    return ""
             else:
-                return ""
-        else:
-            fallos = ut.fallo(fallos, "El nombre debe contener al menos 2 caracteres.")
+                fallos = ut.fallo(fallos, "El nombre debe contener al menos 2 caracteres.")
