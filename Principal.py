@@ -144,12 +144,10 @@ while True:
             elif opcion_cursos == '7':
                 print("\n-- Has seleccionado: Mostrar los alumnos de un Curso --")
                 gbd.mostrarAlumnosdeCurso()
-
             elif opcion_cursos == '9':
                 break
             elif opcion_cursos == '0':
                 exit()
-
     elif opcion_principal == '0':
         exit()
     else:

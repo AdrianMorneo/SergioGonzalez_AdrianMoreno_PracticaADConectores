@@ -8,8 +8,8 @@ def nuevoAlumno():
 
     """
     Permite crear nuevos alumnos pidiendo al usuario los parametros adecuados
-    si falla 3 veces en un parametro no crea el profesor.
-    El usuario puede elegir introducir otro profesor despues de haber metido corretamente un profesor
+    si falla 5 veces en un parametro no crea el profesor.
+    El usuario puede elegir introducir otro alumno despues de haber metido corretamente un alumno
     :param: No recibe nada
     :return: No devuelve nada
     """
@@ -88,43 +88,104 @@ def nuevoAlumno():
             print("\nAlta Cancelada.")
 
 def buscarAlumno():
+    '''
+    Metodo para comprobar la existencia de un alumno , hace comprobaciones individuales tanto del nombre como de los apellidos
+    para que en caso de no encontrar nombre no te pida los apellidos
+    :return: devuelve el nombre y los apellidos en caso de encontrar el alumno , en caso contrario devuelve ""
+    '''
+    nombre = ""
+    apellidos = ""
     finEntradaAlta = False
     fallos = 0
     if ut.comprobarVacio("alumnos"):
         while not finEntradaAlta and fallos < 5:
             nombre = input("Nombre del alumno : ").strip().upper()
             if ut.validarNombre(nombre):
-                finEntradaAlta = True
+                if buscarPorNombre(nombre):
+                    finEntradaAlta = True
+                else:
+                    fallos = ut.fallo(fallos, "No hay ningun Alumno con ese nombre")
             else:
                 fallos = ut.fallo(fallos, "El nombre debe tener al menos dos caracteres ")
-        finEntradaAlta = False
-        while not finEntradaAlta and fallos < 5:
-            apellidos = input("Apellidos del alumno : ").strip().upper()
-            if ut.validarNombre(apellidos):
-                finEntradaAlta = True
-            else:
-                fallos = ut.fallo(fallos, "Los apellidos debe tener al menos 2 caracteres ")
+        fallos = 0
+        if finEntradaAlta:
+            finEntradaAlta = False
+            while not finEntradaAlta and fallos < 5:
+                apellidos = input("Apellidos del alumno : ").strip().upper()
+                if ut.validarNombre(apellidos):
+                    if buscarPorNombreyApellido(nombre, apellidos):
+                        finEntradaAlta = True
+                    else:
+                        fallos = ut.fallo(fallos, f"No hay rigistrado ningun alumno {nombre} {apellidos}")
+                else:
+                    fallos = ut.fallo(fallos, "Los apellidos debe tener al menos 2 caracteres ")
+
         if apellidos is not None and nombre is not None:
-            if gbd.buscarAlumnoBBDD(nombre , apellidos ) != 0:
+            if gbd.buscarAlumnoBBDD(nombre, apellidos) != 0:
                 return nombre, apellidos
             else:
                 return ""
 
 def alumnoRepe(nombre , apellidos):
+    '''
+    Para comprobar por codigo si se repite un alumno para notificar al usuario y  evitar la entrada auqnue tambien
+    esta restringido en la propia tabla alumnos con UNIQUE
+    :param nombre: Nombre del alumno a comprobar
+    :param apellidos: Apellidos del alumno a comprobar
+    :return: Devuelve True o False en funcion de si lo encuentra
+    '''
 
     con, cur = gbd.conexion()
     cur.execute(f"SELECT * FROM alumnos WHERE Nombre = '{nombre}' AND Apellidos = '{apellidos}'")
     repetido = cur.fetchone()
-
     if repetido is not None:
         return True
     else:
         return False
 
 def tlfRepe(telefono):
+    '''
+    Metodo para verificar que el telefono en un alumno no se repite , ya que lo logico es que cada
+    persona tenga un numero de telefono unico
+    :param telefono: Telefono a comprobar
+    :return: Devuelve True o False en funcion de si lo encuentra
+    '''
 
     con, cur = gbd.conexion()
     cur.execute(f"SELECT * FROM alumnos WHERE Telefono = '{telefono}' ")
+    repetido = cur.fetchone()
+    if repetido is not None:
+        return True
+    else:
+        return False
+
+def buscarPorNombre(nombreAl):
+    '''
+    Buscar el nombre introducido para ver si existe y en caso de devolver False evitar que te pida
+    seguidamente los apellidos del alumno
+    :param nombreAl: Nombre a comprobar
+    :return: Devuelve True o False en funcion de si lo encuentra
+    '''
+
+    con, cur = gbd.conexion()
+    cur.execute(f"SELECT * FROM alumnos WHERE Nombre = '{nombreAl}' ")
+    repetido = cur.fetchone()
+    if repetido is not None:
+        return True
+    else:
+        return False
+
+def buscarPorNombreyApellido(nombreAl , apellidoAl):
+    '''
+    Buscar usuario para comprobar si esta repetido recibiendo el nombre y los apellidos del alumno
+    por parametro
+    :param nombreAl: Nombre a comprobar
+    :param apellidoAl: Apellidos a comprobar
+    :return: Devuelve True o False en funcion de si lo encuentra
+    '''
+
+    con, cur = gbd.conexion()
+    cur.execute(f"SELECT * FROM alumnos WHERE Nombre = '{nombreAl}' AND Apellidos = '{apellidoAl}'")
     repetido = cur.fetchone()
     if repetido is not None:
         return True

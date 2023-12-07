@@ -98,8 +98,13 @@ def confirmacion(mensaje, tipo):
             fallos = fallo(fallos, "Entrada no valida.")
 
 
-def comprobarVacio (tabla):
 
+def comprobarVacio (tabla):
+    '''
+    Metodo para comprobar si una tabla esta vacia
+    :param tabla: Nombre de la tabla que se desea comprobar
+    :return: Devuelve True o False en funcion de si la tabla esta vacia o no
+    '''
     con, cur = gbd.conexion()
 
     try:
