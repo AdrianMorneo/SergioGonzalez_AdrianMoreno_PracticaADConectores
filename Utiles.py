@@ -82,7 +82,7 @@ def confirmacion(mensaje, tipo):
     """
     finConfirmacion = False
     fallos = 0
-    while not finConfirmacion and fallos < 3:
+    while not finConfirmacion and fallos < 5:
         eleccion = input(f"{mensaje} [S/N]: ").lower()
         if eleccion == "s":
             finConfirmacion = True

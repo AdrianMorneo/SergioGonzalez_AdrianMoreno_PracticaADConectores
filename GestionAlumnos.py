@@ -76,7 +76,7 @@ def nuevoAlumno():
                     print("\t\tFecha de nacimiento Valida\n")
                     finEntradaAlta = True
                 else:
-                    fallos = ut.fallo(fallos, "Fecha no valida ,deben ser numeros con el siguiente formato: yyyy-mm-dd")
+                    fallos = ut.fallo(fallos, "Fecha no valida ,deben ser numeros con el siguiente formato: yyyy-mm-dd.\n Además debe ser entre 1950 y 2020")
 
         if fallos < 5:
 
@@ -116,7 +116,7 @@ def buscarAlumno():
                     if buscarPorNombreyApellido(nombre, apellidos):
                         finEntradaAlta = True
                     else:
-                        fallos = ut.fallo(fallos, f"No hay rigistrado ningun alumno {nombre} {apellidos}")
+                        fallos = ut.fallo(fallos, f"No hay registrado ningun alumno {nombre} {apellidos}")
                 else:
                     fallos = ut.fallo(fallos, "Los apellidos debe tener al menos 2 caracteres ")
 

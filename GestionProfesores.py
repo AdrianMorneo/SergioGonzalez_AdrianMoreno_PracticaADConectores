@@ -19,8 +19,11 @@ def nuevoProfesor():
         while not finEntradaAlta and fallos < 5:
             dni = input("DNI: ").strip().upper()
             if ut.validarDNI(dni):
-                print("\t\tDNI Valido\n")
-                finEntradaAlta = True
+                if gbd.buscarProfesorBBDDSinPrint(dni) == 0:
+                    print("\t\tDNI Valido\n")
+                    finEntradaAlta = True
+                else:
+                    fallos = ut.fallo(fallos, "DNI está ya en la BBDD")
             else:
                 fallos = ut.fallo(fallos, "El Dni debe tener 8 numeros y una letra")
 
@@ -63,6 +66,8 @@ def nuevoProfesor():
                 gbd.nuevoProfesorInsertBBDD(dni, nombre, direccion, telefono)
                 if ut.confirmacion("Desea realizar otra Alta?", None):
                     finAlta = False
+            else:
+                finEntradaAlta = True
 
         else:
             print("\nAlta Cancelada.")

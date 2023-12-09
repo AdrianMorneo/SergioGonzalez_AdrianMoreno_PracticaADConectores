@@ -18,8 +18,11 @@ def nuevoCurso():
         while not finEntradaAlta and fallos < 3:
             nombre = input("Nombre: ").strip().upper()
             if ut.validarNombre(nombre):
-                print("\t\tNombre Valido\n")
-                finEntradaAlta = True
+                if gbd.devolverIddeCurso(nombre) is None:
+                    print("\t\tNombre Valido\n")
+                    finEntradaAlta = True
+                else:
+                    fallos = ut.fallo(fallos, "El nombre ya esta en la BBDD.")
             else:
                 fallos = ut.fallo(fallos, "El nombre debe contener al menos 2 caracteres.")
 
@@ -39,6 +42,8 @@ def nuevoCurso():
                 gbd.nuevoCursoInsertBBDD(nombre, descripcion)
                 if ut.confirmacion("Desea realizar otra Alta?", None):
                     finAlta = False
+            else:
+                finEntradaAlta = True
 
         else:
             print("\nAlta Cancelada.")

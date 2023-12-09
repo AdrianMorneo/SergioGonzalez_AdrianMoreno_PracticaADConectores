@@ -7,6 +7,7 @@ gbd.crearBBDD()
 gbd.crearTablasBBDD()
 
 while True:
+
     # Menú principal
     print("\nBienvenido al Centro de Estudios de Adrian y Sergio")
     print("--------------------------------------------------")
@@ -57,6 +58,8 @@ while True:
                 break
             elif opcion_profesores == '0':
                 exit()
+            else:
+                print("\nOpcion no valida. Intentelo de nuevo.")
 
     elif opcion_principal == '2':
         # Submenu de Alumnos
@@ -100,6 +103,8 @@ while True:
                 break
             elif opcion_alumnos == '0':
                 exit()
+            else:
+                print("\nOpcion no valida. Intentelo de nuevo.")
 
     elif opcion_principal == '3':
         # Submenu de Cursos
@@ -112,7 +117,8 @@ while True:
             print("4. Buscar curso")
             print("5. Mostrar todos los cursos")
             print("6. Matricular Alumno a un Curso")
-            print("7. Mostrar Alumnos de un Curso")
+            print("7. Desmatricular Alumno de un Curso")
+            print("8. Mostrar Alumnos de un Curso")
             print("9. Volver al menu principal")
             print("0. Salir")
             opcion_cursos = input("\nSeleccione una opcion (1-5, 9, 0): ")
@@ -142,12 +148,21 @@ while True:
                 gbd.matricularAlumno()
 
             elif opcion_cursos == '7':
+                print("\n-- Has seleccionado: Desmatricular Alumno a un Curso --")
+                gbd.desmatricularAlumno()
+
+            elif opcion_cursos == '8':
                 print("\n-- Has seleccionado: Mostrar los alumnos de un Curso --")
                 gbd.mostrarAlumnosdeCurso()
+
             elif opcion_cursos == '9':
                 break
+
             elif opcion_cursos == '0':
                 exit()
+            else:
+                print("\nOpcion no valida. Intentelo de nuevo.")
+
     elif opcion_principal == '0':
         exit()
     else:
