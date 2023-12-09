@@ -44,6 +44,10 @@ def nuevoCurso():
             print("\nAlta Cancelada.")
 
 def buscarCurso():
+    """
+    Busca un curso por su nombre.
+    :return: Devuelve el nombre del curso encontrado o "" si no encuentra nada
+    """
     finEntradaAlta = False
     fallos = 0
     if ut.comprobarVacio("cursos"):

@@ -68,6 +68,10 @@ def nuevoProfesor():
             print("\nAlta Cancelada.")
 
 def buscarProfesor():
+    """
+    Realiza la busqueda del profesor por dni
+    :return: devuelve DNI si lo encuentra, si no, devuelve ""
+    """
     finEntradaAlta = False
     fallos = 0
     if ut.comprobarVacio("profesores"):

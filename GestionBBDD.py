@@ -195,6 +195,10 @@ def nuevoProfesorInsertBBDD(dni, nombre, direccion, telefono):
 
 
 def eliminarProfesorBBDD():
+    """
+    Realiza la consulta SQL para eliminar al profesor, pide DNI y confirma
+    :return: No devuelve nada
+    """
     con, cur = conexion()
     if ut.comprobarVacio("profesores"):
         dni = gp.buscarProfesor()
@@ -211,6 +215,11 @@ def eliminarProfesorBBDD():
 
 
 def buscarProfesorBBDD(dni):
+    """
+    Realiza la consulta en la BBDD buscando un profesor, recibiendo el dni
+    :param dni: Recibe el DNI
+    :return: Devuelve el ID del profesor encontrado por el DNI
+    """
     con, cur = conexion()
     encontrado = False
     if ut.comprobarVacio("profesores"):
@@ -238,8 +247,6 @@ def buscarProfesorBBDD(dni):
 def modificarProfesorBBDD():
     """
     Permite al usuario modificar un profesor seleccionando el campo a modificar.
-
-    :param dni: ID del profesor a modificar.
     :return: No devuelve nada.
     """
     con, cur = conexion()
