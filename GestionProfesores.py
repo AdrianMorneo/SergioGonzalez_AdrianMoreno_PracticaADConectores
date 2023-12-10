@@ -23,6 +23,7 @@ def nuevoProfesor():
                     print("\t\tDNI Valido\n")
                     finEntradaAlta = True
                 else:
+
                     fallos = ut.fallo(fallos, "DNI está ya en la BBDD")
             else:
                 fallos = ut.fallo(fallos, "El Dni debe tener 8 numeros y una letra")

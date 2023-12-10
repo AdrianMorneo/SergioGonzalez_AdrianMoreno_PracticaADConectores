@@ -133,7 +133,7 @@ def crearTablasBBDD():
             Nombre VARCHAR(255) UNIQUE NOT NULL,
             Descripcion TEXT NOT NULL,
             ProfesorID INT,
-            FOREIGN KEY (ProfesorID) REFERENCES profesores (ID)
+            FOREIGN KEY (ProfesorID) REFERENCES profesores (ID) ON DELETE SET NULL
         );''')
 
         # Tabla para alumnos
@@ -152,8 +152,8 @@ def crearTablasBBDD():
             AlumnoExpediente INT,
             CursoCodigo INT,
             PRIMARY KEY (AlumnoExpediente, CursoCodigo),
-            FOREIGN KEY (AlumnoExpediente) REFERENCES alumnos(NumeroExpediente),
-            FOREIGN KEY (CursoCodigo) REFERENCES cursos(Codigo)
+            FOREIGN KEY (AlumnoExpediente) REFERENCES alumnos(NumeroExpediente) ON DELETE CASCADE,
+            FOREIGN KEY (CursoCodigo) REFERENCES cursos(Codigo) ON DELETE CASCADE
         );''')
     except Exception as errorCrearTablas:
         print("Error al crear las tablas:", errorCrearTablas)
@@ -180,8 +180,7 @@ def nuevoProfesorInsertBBDD(dni, nombre, direccion, telefono):
     con, cur = conexion()
 
     try:
-        cur.execute("set FOREIGN_KEY_CHECKS = 1")
-        # Insertar coches
+        # Insertar Profesor
         cur.execute("INSERT INTO profesores (DNI, Nombre, Direccion, Telefono) VALUES (%s, %s, %s, %s)",
                     (dni, nombre, direccion, telefono))
         print("Profesor dado de alta correcctamente")
@@ -202,7 +201,7 @@ def eliminarProfesorBBDD():
     if ut.comprobarVacio("profesores"):
         dni = gp.buscarProfesor()
         if dni != "":
-            if ut.confirmacion("Seguro que quieres ELIMINAR AL PROFESOR?",
+            if ut.confirmacion("Si el profesor imparte algún curso, el curso se quedará sin profesor\nSeguro que quieres ELIMINAR AL PROFESOR?",
                                f"Eliminacion de Profesor con {dni} realizada"):
                 try:
                     cur.execute(f"DELETE FROM profesores WHERE DNI = '{dni}'")
@@ -250,21 +249,20 @@ def buscarProfesorBBDDSinPrint(dni):
     """
     con, cur = conexion()
     encontrado = False
-    if ut.comprobarVacio("profesores"):
-        try:
-            cur.execute(f"SELECT * FROM profesores WHERE DNI = '{dni}'")
-            profesor = cur.fetchone()
-            if profesor:
 
-                return profesor[0]
-            else:
-                print("No se encontró ningún profesor con el DNI especificado.")
-                return 0
-        except Exception as errorModificarProfesor:
-            print(f"Error al buscar el profesor con DNI: {dni}: {errorModificarProfesor}")
+    try:
+        cur.execute(f"SELECT * FROM profesores WHERE DNI = '{dni}'")
+        profesor = cur.fetchone()
+        if profesor:
+            return profesor[0]
+        else:
+            print("No se encontró ningún profesor con el DNI especificado.")
             return 0
-        finally:
-            confirmarEjecucionCerrarCursor(con, cur)
+    except Exception as errorModificarProfesor:
+        print(f"Error al buscar el profesor con DNI: {dni}: {errorModificarProfesor}")
+        return 0
+    finally:
+        confirmarEjecucionCerrarCursor(con, cur)
 
 
 def modificarProfesorBBDD():
@@ -429,7 +427,7 @@ def eliminarCursosBBDD():
         nombre = gc.buscarCurso()
 
         if nombre != "":
-            if ut.confirmacion("Seguro que quieres ELIMINAR EL CURSO?", f"Eliminacion del CURSO: {nombre} realizada"):
+            if ut.confirmacion("Si el curso tiene alumnos, estos de desmatricularan\nSeguro que quieres ELIMINAR EL CURSO?", f"Eliminacion del CURSO: {nombre} realizada"):
                 try:
                     cur.execute(f"DELETE FROM cursos WHERE Nombre = '{nombre}'")
 

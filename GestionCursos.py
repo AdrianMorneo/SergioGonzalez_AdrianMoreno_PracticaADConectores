@@ -15,7 +15,7 @@ def nuevoCurso():
         finEntradaAlta = False
         fallos = 0
 
-        while not finEntradaAlta and fallos < 3:
+        while not finEntradaAlta and fallos < 5:
             nombre = input("Nombre: ").strip().upper()
             if ut.validarNombre(nombre):
                 if gbd.devolverIddeCurso(nombre) is None:
@@ -27,7 +27,7 @@ def nuevoCurso():
                 fallos = ut.fallo(fallos, "El nombre debe contener al menos 2 caracteres.")
 
         finEntradaAlta = False
-        if fallos < 3:
+        if fallos < 5:
             fallos = 0
             while not finEntradaAlta and fallos < 3:
                 descripcion = input("Descripcion: ").strip().upper()
@@ -37,7 +37,7 @@ def nuevoCurso():
                 else:
                     fallos = ut.fallo(fallos, "La descripcion debe de contener mínimo 4 carácteres.")
 
-        if fallos < 3:
+        if fallos < 5:
             if ut.confirmacion("Dar de alta al curso?", "Alta"):
                 gbd.nuevoCursoInsertBBDD(nombre, descripcion)
                 if ut.confirmacion("Desea realizar otra Alta?", None):
@@ -56,7 +56,7 @@ def buscarCurso():
     finEntradaAlta = False
     fallos = 0
     if ut.comprobarVacio("cursos"):
-        while not finEntradaAlta and fallos < 3:
+        while not finEntradaAlta and fallos < 5:
             nombre = input("Nombre: ").strip().upper()
             if ut.validarNombre(nombre):
                 finEntradaAlta = True
