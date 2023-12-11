@@ -1,7 +1,21 @@
 
 from datetime import datetime
 import GestionBBDD as gbd
-
+'''
+Levantar servicio docker o cualquier otro desde el ubuntu... 
+1- En la power shell de Windows introducir el comando → wsl
+2-Una vez dentro del ubuntu introducir el comando → docker service start
+Para comprobar que funciona
+Introducir el comando →service docker status
+Para ver los contenedores y sus datos generales 
+Introducir el comando → docker ps -a
+Para levantar/activar un contenedor
+Introducir el comando → docker start " id del contenedor (Con los primeros caracteres vale )"
+Comprobar la correcta conexión con el cliente MariaDB
+1-Meterte en el cmd desde el bin de xammp e Introducir el comando → mysql -u root -p -P3307
+2-Meter contraseña predeterminada en mi caso (my-secret-pw)
+3- Introducir el comando → show databases;
+'''
 def validarDNI(dni):
     # Validar DNI con 8 números y una letra al final
     """
