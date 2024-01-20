@@ -6,7 +6,7 @@ Levantar servicio docker o cualquier otro desde el ubuntu...
 1- En la power shell de Windows introducir el comando → wsl
 2-Una vez dentro del ubuntu introducir el comando → docker service start
 Para comprobar que funciona
-Introducir el comando →service docker status
+Introducir el comando → service docker status
 Para ver los contenedores y sus datos generales 
 Introducir el comando → docker ps -a
 Para levantar/activar un contenedor
